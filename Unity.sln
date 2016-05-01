@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{B1C05FDD-21A6-47CF-8F5D-7ED267BFC600}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CC8615F6-62AD-479F-80A4-F0461B5383B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{A0A3D9D6-C616-4421-8E6A-894CAFCF3778}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{1F50641D-A5FE-409D-A752-46C5D73504BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.AppHost.Soa", "Frequency.Unity.AppHost.Soa\Frequency.Unity.AppHost.Soa.csproj", "{D671F7A6-0E62-4171-BC89-0C3D74D7C353}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.AppHost.Soa.Configuration", "Frequency.Unity.AppHost.Soa.Configuration\Frequency.Unity.AppHost.Soa.Configuration.csproj", "{08C76EFC-47A2-43EB-9B5A-DC089957D34D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.Common.Module.Security", "Frequency.Unity.Common.Module.Security\Frequency.Unity.Common.Module.Security.csproj", "{D8E627DE-D1DA-4605-8561-753841C04F8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.Common.Module.Localization", "Frequency.Unity.Common.Module.Localization\Frequency.Unity.Common.Module.Localization.csproj", "{A4A955B9-E547-46B8-8AA8-C014E1CDBB01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.BizDev.Module.Contact", "Frequency.Unity.BizDev.Module.Contact\Frequency.Unity.BizDev.Module.Contact.csproj", "{4C201D5E-3918-4146-9542-4A4BB6D6785F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.Common.Module.SharedData", "Frequency.Unity.Common.Module.SharedData\Frequency.Unity.Common.Module.SharedData.csproj", "{63B548E3-5106-4FD1-897A-900FB476FBA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D671F7A6-0E62-4171-BC89-0C3D74D7C353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D671F7A6-0E62-4171-BC89-0C3D74D7C353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D671F7A6-0E62-4171-BC89-0C3D74D7C353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D671F7A6-0E62-4171-BC89-0C3D74D7C353}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08C76EFC-47A2-43EB-9B5A-DC089957D34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08C76EFC-47A2-43EB-9B5A-DC089957D34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08C76EFC-47A2-43EB-9B5A-DC089957D34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08C76EFC-47A2-43EB-9B5A-DC089957D34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E627DE-D1DA-4605-8561-753841C04F8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E627DE-D1DA-4605-8561-753841C04F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E627DE-D1DA-4605-8561-753841C04F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E627DE-D1DA-4605-8561-753841C04F8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C201D5E-3918-4146-9542-4A4BB6D6785F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C201D5E-3918-4146-9542-4A4BB6D6785F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C201D5E-3918-4146-9542-4A4BB6D6785F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C201D5E-3918-4146-9542-4A4BB6D6785F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A0A3D9D6-C616-4421-8E6A-894CAFCF3778} = {B1C05FDD-21A6-47CF-8F5D-7ED267BFC600}
+		{1F50641D-A5FE-409D-A752-46C5D73504BC} = {B1C05FDD-21A6-47CF-8F5D-7ED267BFC600}
+		{D671F7A6-0E62-4171-BC89-0C3D74D7C353} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
+		{08C76EFC-47A2-43EB-9B5A-DC089957D34D} = {A0A3D9D6-C616-4421-8E6A-894CAFCF3778}
+		{D8E627DE-D1DA-4605-8561-753841C04F8C} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
+		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
+		{4C201D5E-3918-4146-9542-4A4BB6D6785F} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
+		{63B548E3-5106-4FD1-897A-900FB476FBA2} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,149 @@
+﻿using System;
+using System.Collections.Generic;
+using Frequency.Framework;
+using Frequency.Framework.DataAccess;
+using Frequency.Framework.Security;
+using Frequency.Unity.Common.Module.Security.Enums;
+using Frequency.Unity.Common.Module.SharedData;
+
+namespace Frequency.Unity.Common.Module.Security
+{
+	public class Account : IAuditable, IAccount
+    {
+		private readonly IRepository<Account> repository;
+		private readonly IModuleContext context;
+		private readonly CommonDataManager commonDataManager;
+
+		protected Account() { }
+
+		public Account(IRepository<Account> repository, IModuleContext context, CommonDataManager commonDataManager)
+		{
+			this.repository = repository;
+			this.context = context;
+			this.commonDataManager = commonDataManager;
+		}
+
+		public virtual int Id { get; protected set; }
+		public virtual string DisplayName { get; protected set; }
+		public virtual Email Email { get; protected set; }
+		public virtual string Password { get; protected set; }
+		public virtual AccountStatus Status { get; protected set; }
+		public virtual AuditInfo AuditInfo { get; protected set; }
+
+		protected internal virtual Account With(string displayName, Email email)
+		{
+			if (context.Query<Accounts>().CountBy(email) > 0)
+			{
+				throw new SecurityException.DuplicateEmailFound(email);
+			}
+
+			DisplayName = displayName;
+			Email = email;
+			Password = string.Empty;
+			Status = AccountStatus.Passive;
+
+			repository.Insert(this);
+
+			return this;
+		}
+
+		public virtual List<AccountToken> GetTokens()
+		{
+			return context.Query<AccountTokens>().ByAccount(this);
+		}
+
+		protected internal virtual void ChangePassword(string oldPassword, string newPassword)
+		{
+			if (string.IsNullOrEmpty(oldPassword))
+			{
+				throw new SharedDataException.RequiredParameterIsMissing("oldPassword");
+			}
+
+			if (string.IsNullOrEmpty(newPassword))
+			{
+				throw new SharedDataException.RequiredParameterIsMissing("newPassword");
+			}
+
+			if (oldPassword.EncryptPassword() == newPassword.EncryptPassword())
+			{
+				throw new SecurityException.PasswordsCannotBeTheSame();
+			}
+
+			if (oldPassword.EncryptPassword() != Password)
+			{
+				throw new SecurityException.GivenPasswordDoesNotMatchWithAccountPassword();
+			}
+
+			SetPassword(newPassword);
+
+			foreach (var accountToken in GetTokens())
+			{
+				if (accountToken == context.Session) { continue; }
+
+				accountToken.MarkAsPassive();
+			}
+		}
+
+		private void SetPassword(string password)
+		{
+			if (password.PasswordIsValid())
+			{
+				Password = password.EncryptPassword();
+			}
+		}
+
+		protected internal virtual AccountToken CreateToken()
+		{
+			switch (Status)
+			{
+				case AccountStatus.Passive:
+					throw new SecurityException.AccountIsPassive();
+				case AccountStatus.Blocked:
+					throw new SecurityException.AccountIsBlocked();
+			}
+
+			return context.New<AccountToken>().With(this, context.System.Now.AddMinutes(commonDataManager.GetAccountTokenExpireMinute()));
+		}
+
+		private void ChangeStatus(AccountStatus status)
+		{
+			Status = status;
+		}
+
+		public override string ToString()
+		{
+			return DisplayName;
+		}
+
+		#region Api Mappings
+
+		#region Security
+
+		bool IAccount.HasAccess(IResource resource) { return true; }
+
+		#endregion
+
+		#endregion
+	}
+
+	public class Accounts : Query<Account>
+	{
+		public Accounts(IModuleContext context)
+			: base(context) { }
+
+		internal Account SingleBy(Email email)
+		{
+			return SingleBy(a => a.Email == email);
+		}
+
+		internal int CountBy(Email email)
+		{
+			return CountBy(a => a.Email == email);
+		}
+
+		internal Account SingleBy(Email email, string password)
+		{
+			return SingleBy(a => a.Email == email && a.Password == password.EncryptPassword());
+		}
+	}
+}
