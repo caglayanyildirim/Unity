@@ -51,6 +51,8 @@
     <Compile Include="Enums\AccountStatus.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityCode.cs" />
+    <Compile Include="Enums\SecurityCodeStatus.cs" />
     <Compile Include="SecurityException.cs" />
     <Compile Include="SecurityManager.cs" />
   </ItemGroup>

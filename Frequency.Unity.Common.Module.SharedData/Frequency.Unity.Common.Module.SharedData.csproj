@@ -51,6 +51,7 @@
     <Compile Include="CommonDataManager.cs" />
     <Compile Include="IApplicationCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomSequenceService.cs" />
     <Compile Include="ResultCodes.cs" />
     <Compile Include="SharedDataException.cs" />
   </ItemGroup>

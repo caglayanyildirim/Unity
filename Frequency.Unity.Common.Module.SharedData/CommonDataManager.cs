@@ -15,7 +15,13 @@ namespace Frequency.Unity.Common.Module.SharedData
         [Internal]
         public int GetAccountTokenExpireMinute()
         {
-            return context.Settings.Get<int>("GetAccountTokenExpireMinute");
+            return context.Settings.Get<int>("AccountTokenExpireMinute");
+        }
+
+        [Internal]
+        public int GetSecurityCodeExpireMinute()
+        {
+            return context.Settings.Get<int>("SecurityCodeExpireMinute");
         }
     }
 }

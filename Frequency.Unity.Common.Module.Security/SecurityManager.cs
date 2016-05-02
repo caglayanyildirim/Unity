@@ -28,8 +28,39 @@ namespace Frequency.Unity.Common.Module.Security
 
 			return context.New<Account>().With(displayName, email);
 		}
+        public void CreateSecurityCode(Email email)
+        {
+            if (email.IsDefault()) { throw new SecurityException.EmailCannotBeEmpty(); }
 
-		public void ChangePassword(string oldPassword, string newPassword)
+            var account = CheckAccount(email);
+
+            if (account != null)
+            {
+                var expireSetting = commonDataManager.GetSecurityCodeExpireMinute();
+                var securityCode = context.New<SecurityCode>().With(account, TimeSpan.FromMinutes(expireSetting));
+                
+            }
+            else
+            {
+                
+            }
+        }
+
+        public void VerifySecurityCode(Email email, string securityCode)
+        {
+            if (email.IsDefault()) { throw new SecurityException.EmailCannotBeEmpty(); }
+            if (securityCode.IsNullOrEmpty()) { throw new SecurityException.SecurityCodeCannotBeEmpty(); }
+
+            var account = CheckAccount(email);
+            if (account == null)
+            {
+                throw new SecurityException.SecurityCodeOrAccountNotFound();
+            }
+
+            account.VerifySecurityCode(securityCode);
+        }
+
+        public void ChangePassword(string oldPassword, string newPassword)
 		{
 		    var account = context.GetCurrentAccountToken().Account;
 		    if (account.Status == AccountStatus.Blocked)
@@ -40,7 +71,31 @@ namespace Frequency.Unity.Common.Module.Security
             account.ChangePassword(oldPassword, newPassword);
 		}
 
-		public AccountToken Login(Email email, string password)
+        public AccountToken SavePassword(Email email, string securityCode, string password)
+        {
+            if (email.IsDefault()) { throw new SecurityException.EmailCannotBeEmpty(); }
+            if (securityCode.IsNullOrEmpty()) { throw new SecurityException.SecurityCodeCannotBeEmpty(); }
+            if (password.IsNullOrEmpty()) { throw new SecurityException.PasswordCannotBeEmpty(); }
+
+            var account = CheckAccount(email);
+            if (account == null)
+            {
+                throw new SecurityException.SecurityCodeOrAccountNotFound();
+            }
+
+            if (account.Status == AccountStatus.Passive)
+            {
+
+                
+            }
+
+            account.Activate(securityCode, password);
+
+            return account.CreateToken();
+        }
+
+
+        public AccountToken Login(Email email, string password)
 		{
 			if (email.IsDefault()) { throw new SecurityException.EmailCannotBeEmpty(); }
 			if (password.IsNullOrEmpty()) { throw new SecurityException.PasswordCannotBeEmpty(); }

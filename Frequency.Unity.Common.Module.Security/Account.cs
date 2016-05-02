@@ -91,8 +91,16 @@ namespace Frequency.Unity.Common.Module.Security
 				Password = password.EncryptPassword();
 			}
 		}
+        public virtual void Activate(string securityCode, string password)
+        {
+            var secCode = GetSecurityCode(securityCode);
+            secCode.MarkAsUsed();
 
-		protected internal virtual AccountToken CreateToken()
+            SetPassword(password);
+            ChangeStatus(AccountStatus.Active);
+        }
+
+        protected internal virtual AccountToken CreateToken()
 		{
 			switch (Status)
 			{
@@ -104,8 +112,23 @@ namespace Frequency.Unity.Common.Module.Security
 
 			return context.New<AccountToken>().With(this, context.System.Now.AddMinutes(commonDataManager.GetAccountTokenExpireMinute()));
 		}
+        protected internal virtual void VerifySecurityCode(string securityCode)
+        {
+            GetSecurityCode(securityCode);
+        }
 
-		private void ChangeStatus(AccountStatus status)
+        private SecurityCode GetSecurityCode(string securityCode)
+        {
+            var secCode = context.Query<SecurityCodes>().SingleBy(this, securityCode);
+            if (secCode == null)
+            {
+                throw new SecurityException.SecurityCodeOrAccountNotFound();
+            }
+
+            return secCode;
+        }
+
+        private void ChangeStatus(AccountStatus status)
 		{
 			Status = status;
 		}
