@@ -4,12 +4,13 @@ using Frequency.Framework;
 using Frequency.Framework.DataAccess;
 using Frequency.Framework.Security;
 using Frequency.Unity.Common.Module.Security.Enums;
+using Frequency.Unity.Common.Module.Security.Service;
 using Frequency.Unity.Common.Module.SharedData;
 
 namespace Frequency.Unity.Common.Module.Security
 {
-	public class Account : IAuditable, IAccount
-	{
+	public class Account : IAuditable, IAccount, IAccountInfo
+    {
 	    const int MAX_DISPLAY_NAME_LENGHT = 20;
 	    const int MIN_DISPLAY_NAME_LENGHT = 3;
         #region Constructor
@@ -18,7 +19,7 @@ namespace Frequency.Unity.Common.Module.Security
 		private readonly IModuleContext context;
 		private readonly CommonDataManager commonDataManager;
 
-		protected Account() { }
+	    protected Account() { }
 
 		public Account(IRepository<Account> repository, IModuleContext context, CommonDataManager commonDataManager)
 		{
@@ -158,18 +159,25 @@ namespace Frequency.Unity.Common.Module.Security
 			return DisplayName;
 		}
 
-		#region Api Mappings
+	    #region Api Mappings
 
 		#region Security
 
 		bool IAccount.HasAccess(IResource resource) { return true; }
 
-		#endregion
+        #endregion
 
-		#endregion
-	}
+        #endregion
 
-	public class Accounts : Query<Account>
+        #region Web Service Mappings
+
+        #region Common
+        #endregion
+
+        #endregion
+    }
+
+    public class Accounts : Query<Account>
 	{
 		public Accounts(IModuleContext context)
 			: base(context) { }

@@ -144,6 +144,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebServicePackage\UnityService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Frequency.Unity.AppHost.Soa.Configuration\Frequency.Unity.AppHost.Soa.Configuration.csproj">
