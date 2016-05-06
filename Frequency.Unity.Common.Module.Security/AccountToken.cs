@@ -6,95 +6,104 @@ using Frequency.Framework.Security;
 
 namespace Frequency.Unity.Common.Module.Security
 {
-	public class AccountToken : IAuditable, ISession
+    public class AccountToken : IAuditable, ISession
     {
-		private readonly IRepository<AccountToken> repository;
+        #region Constructor
 
-		private readonly IModuleContext context;
+        private readonly IRepository<AccountToken> repository;
 
-		protected AccountToken() { }
-		public AccountToken(IRepository<AccountToken> repository, IModuleContext context)
-		{
-			this.repository = repository;
-			this.context = context;
-		}
+        private readonly IModuleContext context;
 
-		public virtual int Id { get; protected set; }
-		public virtual Account Account { get; protected set; }
-		public virtual AppToken Token { get; protected set; }
-		public virtual bool IsActive { get; protected set; }
-		public virtual DateTime ExpireDateTime { get; protected set; }
-		public virtual AuditInfo AuditInfo { get; protected set; }
+        protected AccountToken() { }
+        public AccountToken(IRepository<AccountToken> repository, IModuleContext context)
+        {
+            this.repository = repository;
+            this.context = context;
+        }
 
-		protected internal virtual AccountToken With(Account account, DateTime expireDate)
-		{
-			Account = account;
-			Token = context.System.NewAppToken();
-			IsActive = true;
-			ExpireDateTime = expireDate;
+        #endregion
 
-			repository.Insert(this);
+        #region Properties
 
-			return this;
-		}
+        public virtual int Id { get; protected set; }
+        public virtual Account Account { get; protected set; }
+        public virtual AppToken Token { get; protected set; }
+        public virtual bool IsActive { get; protected set; }
+        public virtual DateTime ExpireDateTime { get; protected set; }
+        public virtual AuditInfo AuditInfo { get; protected set; }
 
-		protected internal virtual void MarkAsPassive()
-		{
-			IsActive = false;
-		}
+        #endregion
 
-		private void Validate()
-		{
-			if (ExpireDateTime < context.System.Now)
-			{
-				throw new SecurityException.AccountTokenExpired();
-			}
+        protected internal virtual AccountToken With(Account account, DateTime expireDate)
+        {
+            Account = account;
+            Token = context.System.NewAppToken();
+            IsActive = true;
+            ExpireDateTime = expireDate;
 
-			repository.ForceUpdate(this);
-		}
+            repository.Insert(this);
 
-		#region Api Mappings
+            return this;
+        }
 
-		#region Security
+        protected internal virtual void MarkAsPassive()
+        {
+            IsActive = false;
+        }
 
-		IAccount ISession.Account { get { return Account; } }
-		
-		string ISession.Host
-		{
-			get
-			{
-				 
-				return string.Format("{0} @ {1}", Account.DisplayName, 
-					context.Request.Host.Address //todo: login sirasinda request.host gonderilmeli ve bu tabloda kaydedilmeli
-				);
-			}
-		}
+        private void Validate()
+        {
+            if (ExpireDateTime < context.System.Now)
+            {
+                throw new SecurityException.AccountTokenExpired();
+            }
 
-		void ISession.Validate() { Validate(); }
+            repository.ForceUpdate(this);
+        }
 
-		#endregion
+        #region Api Mappings
 
-		#endregion
+        #region Security
 
-		#region Web Service Mappings
-        
+        IAccount ISession.Account { get { return Account; } }
 
-		#endregion
-	}
+        string ISession.Host
+        {
+            get
+            {
 
-	public class AccountTokens : Query<AccountToken>
-	{
-		public AccountTokens(IModuleContext context)
-			: base(context) { }
+                return string.Format("{0} @ {1}", Account.DisplayName,
+                    context.Request.Host.Address //todo: login sirasinda request.host gonderilmeli ve bu tabloda kaydedilmeli
+                );
+            }
+        }
 
-		internal AccountToken SingleByToken(AppToken token)
-		{
-			return SingleBy(at => at.Token == token && at.IsActive);
-		}
+        void ISession.Validate() { Validate(); }
 
-		internal List<AccountToken> ByAccount(Account account)
-		{
-			return By(at => at.Account == account && at.IsActive);
-		}
-	}
+        #endregion
+
+        #endregion
+
+        #region Web Service Mappings
+
+
+        #endregion
+    }
+
+    public class AccountTokens : Query<AccountToken>
+    {
+        public AccountTokens(IModuleContext context)
+            : base(context)
+        { }
+
+        internal AccountToken SingleByToken(AppToken token)
+        {
+            return SingleBy(at => at.Token == token && at.IsActive);
+        }
+
+        internal List<AccountToken> ByAccount(Account account)
+        {
+            return By(at => at.Account == account && at.IsActive);
+        }
+    }
 }

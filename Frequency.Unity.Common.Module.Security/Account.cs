@@ -9,8 +9,12 @@ using Frequency.Unity.Common.Module.SharedData;
 namespace Frequency.Unity.Common.Module.Security
 {
 	public class Account : IAuditable, IAccount
-    {
-		private readonly IRepository<Account> repository;
+	{
+	    const int MAX_DISPLAY_NAME_LENGHT = 20;
+	    const int MIN_DISPLAY_NAME_LENGHT = 3;
+        #region Constructor
+
+        private readonly IRepository<Account> repository;
 		private readonly IModuleContext context;
 		private readonly CommonDataManager commonDataManager;
 
@@ -23,18 +27,34 @@ namespace Frequency.Unity.Common.Module.Security
 			this.commonDataManager = commonDataManager;
 		}
 
-		public virtual int Id { get; protected set; }
+        #endregion
+
+        #region Properties
+
+        public virtual int Id { get; protected set; }
 		public virtual string DisplayName { get; protected set; }
 		public virtual Email Email { get; protected set; }
 		public virtual string Password { get; protected set; }
 		public virtual AccountStatus Status { get; protected set; }
 		public virtual AuditInfo AuditInfo { get; protected set; }
 
-		protected internal virtual Account With(string displayName, Email email)
+        #endregion
+
+        protected internal virtual Account With(string displayName, Email email)
 		{
 			if (context.Query<Accounts>().CountBy(email) > 0)
 			{
 				throw new SecurityException.DuplicateEmailFound(email);
+			}
+            var dName = displayName.Trim();
+		    if (dName.IndexOf(" ", StringComparison.Ordinal)!=-1 || dName.Length > MAX_DISPLAY_NAME_LENGHT || dName.Length < MIN_DISPLAY_NAME_LENGHT)
+		    {
+                throw new SharedDataException.InvalidData("displayName", displayName);
+            }
+
+            if (context.Query<Accounts>().CountBy(displayName) > 0)
+			{
+				throw new SecurityException.DuplicateNameFound(displayName);
 			}
 
 			DisplayName = displayName;
@@ -162,6 +182,10 @@ namespace Frequency.Unity.Common.Module.Security
 		internal int CountBy(Email email)
 		{
 			return CountBy(a => a.Email == email);
+		}
+		internal int CountBy(string displayName)
+		{
+			return CountBy(a => a.DisplayName == displayName);
 		}
 
 		internal Account SingleBy(Email email, string password)

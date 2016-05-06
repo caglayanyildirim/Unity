@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.BizDev.Modu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.Common.Module.SharedData", "Frequency.Unity.Common.Module.SharedData\Frequency.Unity.Common.Module.SharedData.csproj", "{63B548E3-5106-4FD1-897A-900FB476FBA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.Common.Module.EventManagement", "Frequency.Unity.Common.Module.EventManagement\Frequency.Unity.Common.Module.EventManagement.csproj", "{FA373056-9C39-45C2-8A86-08F445DC4B3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.AppHost.WebApi", "Frequency.Unity.AppHost.WebApi\Frequency.Unity.AppHost.WebApi.csproj", "{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,14 @@ Global
 		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63B548E3-5106-4FD1-897A-900FB476FBA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA373056-9C39-45C2-8A86-08F445DC4B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA373056-9C39-45C2-8A86-08F445DC4B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA373056-9C39-45C2-8A86-08F445DC4B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA373056-9C39-45C2-8A86-08F445DC4B3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,5 +80,7 @@ Global
 		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
 		{4C201D5E-3918-4146-9542-4A4BB6D6785F} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
 		{63B548E3-5106-4FD1-897A-900FB476FBA2} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
+		{FA373056-9C39-45C2-8A86-08F445DC4B3B} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
+		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
 	EndGlobalSection
 EndGlobal

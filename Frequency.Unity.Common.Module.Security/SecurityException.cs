@@ -123,5 +123,11 @@ namespace Frequency.Unity.Common.Module.Security
                 : base(ResultCodes.Security.Err(16))
             { }
         }
+        public class DuplicateNameFound : ServiceException
+        {
+            public DuplicateNameFound(string name)
+                : base(ResultCodes.Security.Err(17), name)
+            { }
+        }
     }
 }

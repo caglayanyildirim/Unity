@@ -9,7 +9,9 @@ namespace Frequency.Unity.Common.Module.Security
 {
 	public class SecurityManager :IAuditManager, ISessionManager
 	{
-		private readonly IModuleContext context;
+        #region Constructor
+
+        private readonly IModuleContext context;
 		private readonly CommonDataManager commonDataManager;
         private readonly ILogger logger;
 
@@ -21,7 +23,9 @@ namespace Frequency.Unity.Common.Module.Security
             logger = context.Logger.Get<SecurityManager>();
 		}
 
-		public Account Register(string displayName, Email email)
+        #endregion
+
+        public Account Register(string displayName, Email email)
 		{
 		    if (displayName == null) { throw new SecurityException.DisplayNameCannotBeEmpty(); }
             if (email.IsDefault()) { throw new SecurityException.EmailCannotBeEmpty(); }

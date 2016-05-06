@@ -8,7 +8,9 @@ namespace Frequency.Unity.Common.Module.Security
 {
     public class SecurityCode : IAuditable
 	{
-		private readonly IRepository<SecurityCode> repository;
+        #region Constructor
+
+        private readonly IRepository<SecurityCode> repository;
 		private readonly IModuleContext context;
 		private readonly IRandomSequenceService sequenceService;
 
@@ -21,14 +23,20 @@ namespace Frequency.Unity.Common.Module.Security
 			this.sequenceService = sequenceService;
 		}
 
-		public virtual int Id { get; protected set; }
+        #endregion
+
+        #region Properties
+
+        public virtual int Id { get; protected set; }
 		public virtual Account Account { get; protected set; }
 		public virtual string Code { get; protected set; }
 		public virtual SecurityCodeStatus Status { get; protected set; }
 		public virtual DateTime ExpireDate { get; protected set; }
 		public virtual AuditInfo AuditInfo { get; protected set; }
 
-		protected internal virtual SecurityCode With(Account account, TimeSpan lifetime) { return With(account, context.System.Now.Add(lifetime)); }
+        #endregion
+
+        protected internal virtual SecurityCode With(Account account, TimeSpan lifetime) { return With(account, context.System.Now.Add(lifetime)); }
 		protected internal virtual SecurityCode With(Account account, DateTime expireDate)
 		{
 			Account = account;
