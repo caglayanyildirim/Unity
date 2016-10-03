@@ -18,6 +18,7 @@ namespace Frequency.Unity.Common.Module.EventManagement
         {
             this.repository = repository;
             this.context = context;
+            
         }
 
         #endregion
