@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}"
 EndProject
@@ -28,6 +28,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.Common.Module.EventManagement", "Frequency.Unity.Common.Module.EventManagement\Frequency.Unity.Common.Module.EventManagement.csproj", "{FA373056-9C39-45C2-8A86-08F445DC4B3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.AppHost.WebApi", "Frequency.Unity.AppHost.WebApi\Frequency.Unity.AppHost.WebApi.csproj", "{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frequency.Unity.AppHost.Mvc", "Frequency.Unity.AppHost.Mvc\Frequency.Unity.AppHost.Mvc.csproj", "{15EF3641-2242-4D2E-8143-2715C73AB360}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4FB79988-A018-4B7B-8C1F-8FCAB74405BE}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,20 +76,25 @@ Global
 		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15EF3641-2242-4D2E-8143-2715C73AB360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15EF3641-2242-4D2E-8143-2715C73AB360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15EF3641-2242-4D2E-8143-2715C73AB360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15EF3641-2242-4D2E-8143-2715C73AB360}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{D671F7A6-0E62-4171-BC89-0C3D74D7C353} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
+		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
+		{15EF3641-2242-4D2E-8143-2715C73AB360} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
 		{A0A3D9D6-C616-4421-8E6A-894CAFCF3778} = {B1C05FDD-21A6-47CF-8F5D-7ED267BFC600}
 		{1F50641D-A5FE-409D-A752-46C5D73504BC} = {B1C05FDD-21A6-47CF-8F5D-7ED267BFC600}
-		{D671F7A6-0E62-4171-BC89-0C3D74D7C353} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
 		{08C76EFC-47A2-43EB-9B5A-DC089957D34D} = {A0A3D9D6-C616-4421-8E6A-894CAFCF3778}
 		{D8E627DE-D1DA-4605-8561-753841C04F8C} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
 		{A4A955B9-E547-46B8-8AA8-C014E1CDBB01} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
 		{4C201D5E-3918-4146-9542-4A4BB6D6785F} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
 		{63B548E3-5106-4FD1-897A-900FB476FBA2} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
 		{FA373056-9C39-45C2-8A86-08F445DC4B3B} = {1F50641D-A5FE-409D-A752-46C5D73504BC}
-		{338C84D7-42DA-47EC-B640-DC2BB8B3DB11} = {6AE2E69C-25B6-435D-9AA2-9C3F135B88D0}
 	EndGlobalSection
 EndGlobal

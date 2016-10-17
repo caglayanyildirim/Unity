@@ -41,6 +41,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Frequency.Framework, Version=0.7.9.36742, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Frequency.Unity.Common.Module.SharedData\_lib\Frequency.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Frequency.Framework.Configuration">
       <HintPath>..\Frequency.Unity.Common.Module.SharedData\_lib\Frequency.Framework.Configuration.dll</HintPath>
     </Reference>

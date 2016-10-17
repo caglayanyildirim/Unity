@@ -1,51 +1,98 @@
-﻿using Frequency.Framework.Configuration.Configurers;
-using Frequency.Framework.IO;
+﻿using System;
+using System.Data;
+using Castle.MicroKernel;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using Frequency.Framework;
+using Frequency.Framework.Configuration;
+using Frequency.Framework.Configuration.Configurers;
+using Frequency.Framework.DataAccess.NHibernate;
 using Frequency.Framework.Logging;
 using Frequency.Framework.Web;
 
+
 namespace Frequency.Unity.AppHost.Soa
 {
+    public class BatchSizePatch : INHibernateConfiguration
+    {
+        public void Configure(FluentConfiguration fluentConfiguration, IKernel kernel)
+        {
+            fluentConfiguration.Database(
+                MsSqlConfiguration.MsSql2008
+                    .ConnectionString(c => c.Database("ApplicationDB").Server("ISTDBDEVSRV").TrustedConnection())
+                    .MaxFetchDepth(Constants.DEFAULT_DATA_ACCESS_MAX_FETCH_DEPTH)
+                    .ShowSql()
+                    .AdoNetBatchSize(100)
+                );
+        }
+
+        public void Configure(NHibernateInterceptor nhibernateInterceptor, IKernel kernel) { }
+    }
+
     public class Global : ServiceApplication
     {
-        protected override ServiceClientConfiguration ServiceClientConfiguration(ServiceClientConfigurer configure)
+        protected override DatabaseConfiguration Database(DatabaseConfigurer configure)
         {
-            return configure.Localhost(53325);
+            return configure.SqlServer2005("ISTDBDEVSRV", "ApplicationDB");
+            //return configure.SqlServer2005("ISTSQLTESTSRV", "ApplicationDB");
         }
 
-        protected override DatabaseConfiguration DatabaseConfiguration(DatabaseConfigurer configure)
+        protected override NullParentsOption NullParents(NullParentsConfigurer configure)
         {
-            return configure.SqlServer2008("Oracle", "UnityDb",false);
+            return configure.UseZeroId();
         }
 
-        protected override IFileSystem FileSystemConfiguration(FileSystemConfigurer configure)
+        protected override TransactionFeature Transaction(TransactionConfigurer configure)
         {
-            return configure.LocalFileSystem(@"C:\SavedFromApplication", true);
+            return configure.NHibernate(IsolationLevel.ReadUncommitted);
         }
 
-        protected override SchedulerConfiguration SchedulerConfiguration(SchedulerConfigurer configure)
+        protected override ReportEngineFeature ReportEngine(ReportEngineConfigurer configure)
         {
-            return configure.NoScheduling();
+            return configure.NativeSql(TimeSpan.FromSeconds(120));
         }
 
-        protected override MessageQueueConfiguration MessageQueueConfiguration(MessageQueueConfigurer configure)
-        {
-            return configure.NoMessageQueue();
-        }
-
-        protected override LoggerConfiguration LoggerConfiguration(LoggerConfigurer configure)
+        protected override ServiceConfiguration Service(ServiceConfigurer configure)
         {
             return configure
-                .Level("MNF.Cache", LogLevel.Info)
-                .Level("MNF.DataAccess", LogLevel.Info)
-                .Debug();
+                .MaxResultLengthInBytes(80 * 1024 * 1024)
+                .RequestTimeout(TimeSpan.FromMinutes(45))
+                .Localhost(32805)
+                .Routine();
         }
 
-        protected override bool IncludeModuleGroupInModuleNames { get { return true; } }
+        protected override ModuleConfiguration Module(ModuleConfigurer configure)
+        {
+            return configure.Routine(true);
+        }
 
-        protected override int ReportQueryTimeOutInSeconds { get { return 120; } }
+        protected override AuthenticationFeature Authentication(AuthenticationConfigurer configure)
+        {
+            return configure.TokenBased(4);
+        }
 
-        protected override int MaxResultLengthInBytes { get { return 80 * 1024 * 1024; } }
+        protected override SchedulerFeature Scheduling(SchedulerConfigurer configure)
+        {
+            return configure.NoScheduling();
+            //return configure.Quartz();
+        }
 
-        protected override int ServiceRequestTimeoutInMinutes { get { return 45; } }
+        protected override MessageQueueFeature MessageQueue(MessageQueueConfigurer configure)
+        {
+            return configure.NoMessageQueue();
+            //return configure.RabbitMq("test.mq.multinetlocal.com.tr", "EnterpriseServices/" + Environment.UserName);
+        }
+
+        protected override FileSystemFeature FileSystem(FileSystemConfigurer configure)
+        {
+            return configure.Local(@"C:\SavedFromApplication", true);
+        }
+
+        protected override LoggingFeature Logging(LoggingConfigurer configure)
+        {
+            return configure
+                .Level("Frequency.Framework", LogLevel.Info)
+                .Log4Net(LogLevel.Debug);
+        }
     }
 }

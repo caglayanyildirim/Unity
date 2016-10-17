@@ -4,7 +4,9 @@ using System.Linq;
 using Frequency.Framework;
 using Frequency.Framework.Caching;
 using Frequency.Framework.DataAccess;
+using Frequency.Framework.TransactionManagement;
 using Frequency.Unity.Common.Module.SharedData;
+
 
 namespace Frequency.Unity.Common.Module.Localization
 {
@@ -17,13 +19,13 @@ namespace Frequency.Unity.Common.Module.Localization
         private readonly IApplicationCache applicationCache;
 
         protected Language() { }
+
         public Language(IRepository<Language> repository, IModuleContext context, IApplicationCache applicationCache)
         {
             this.repository = repository;
             this.context = context;
             this.applicationCache = applicationCache;
         }
-
         #endregion
 
         #region Properties
@@ -54,6 +56,11 @@ namespace Frequency.Unity.Common.Module.Localization
             return context.Query<LocalizationTexts>().ByLanguage(this);
         }
 
+        public virtual List<LocalizationText> GetUnsetLocalizationTexts()
+        {
+            return context.Query<LocalizationTexts>().UnsetByLanguage(this);
+        }
+
         private const string DICTIONARY = "Dictionary";
         private Dictionary<string, string> Dictionary
         {
@@ -71,6 +78,11 @@ namespace Frequency.Unity.Common.Module.Localization
 
             Dictionary.TryGetValue(key, out result);
 
+            if (result == null)
+            {
+                context.WithNewTransaction(this).Do(@this => @this.SetLocalizedText(key, key));
+            }
+
             return result ?? key;
         }
 
@@ -86,6 +98,11 @@ namespace Frequency.Unity.Common.Module.Localization
             GetLocalizedText(key); //set işlemi sonunda tüm cache'i tekrar ayağa kaldırması için eklendi
         }
 
+        public override string ToString()
+        {
+            return LanguageName;
+        }
+
         #region Api Mappings
 
         #region Caching
@@ -95,14 +112,12 @@ namespace Frequency.Unity.Common.Module.Localization
         #endregion
 
         #endregion
-
     }
 
     public class Languages : CachedQuery<Language>
     {
         public Languages(IModuleContext context)
-        : base(context)
-        { }
+            : base(context) { }
 
         internal Language SingleByLanguageCode(string languageCode)
         {
@@ -124,6 +139,7 @@ namespace Frequency.Unity.Common.Module.Localization
             return SingleByLanguageCode(context.System.CurrentLanguageCode());
         }
     }
+
     public static class LanguageExtensions
     {
         public static string CurrentLanguageCode(this ISystem system)

@@ -1,61 +1,68 @@
 ﻿using System;
 using System.Web;
+using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using Frequency.Framework.Configuration.Overriders;
+using Frequency.Framework.Configuration;
 using Frequency.Unity.Common.Module.SharedData;
 
 namespace Frequency.Unity.AppHost.Soa.Configuration
 {
-	public class HttpApplicationCache : IApplicationCache, IIoCConfigurationOverrider
-	{
-		public T Get<T>(string key, Func<T> getFunction)
-		{
-			var applicationState = HttpContext.Current.Application;
-			var obj = (T)applicationState[key];
+    public class HttpApplicationCache : IIoCConfiguration
+    {
+        void IIoCConfiguration.Configure(IKernel kernel)
+        {
+            if (!kernel.HasComponent(typeof(IApplicationCache)))
+            {
+                kernel.Register(Component.For<IApplicationCache>().ImplementedBy<DotNet>().LifestyleSingleton());
+            }
+        }
 
-			if (obj != null)
-			{
-				return obj;
-			}
+        public class DotNet : IApplicationCache
+        {
+            public T Get<T>(string key, Func<T> getFunction)
+            {
+                var applicationState = HttpContext.Current.Application;
+                var obj = (T)applicationState[key];
 
-			applicationState.Lock();
+                if (obj != null)
+                {
+                    return obj;
+                }
 
-			applicationState[key] = obj = getFunction();
-			applicationState.UnLock();
+                applicationState.Lock();
 
-			return obj;
-		}
+                applicationState[key] = obj = getFunction();
 
-		public object Remove(string key)
-		{
-			var applicationState = HttpContext.Current.Application;
-			var obj = applicationState[key];
+                applicationState.UnLock();
 
-			if (obj == null)
-			{
-				return null;
-			}
-			applicationState.Lock();
+                return obj;
+            }
 
-			applicationState.Remove(key);
+            public object Remove(string key)
+            {
+                var applicationState = HttpContext.Current.Application;
+                var obj = applicationState[key];
 
-			applicationState.UnLock();
+                if (obj == null)
+                {
+                    return null;
+                }
+                applicationState.Lock();
 
-			return obj;
-		}
+                applicationState.Remove(key);
 
-		public void Clear()
-		{
-			var applicationState = HttpContext.Current.Application;
-			applicationState.Lock();
-			applicationState.Clear();
-			applicationState.UnLock();
-		}
+                applicationState.UnLock();
 
-		public IWindsorContainer MakeOverride(IWindsorContainer container)
-		{
-			return container.Register(Component.For<IApplicationCache>().ImplementedBy<HttpApplicationCache>().LifestyleSingleton());
-		}
-	}
+                return obj;
+            }
+
+            public void Clear()
+            {
+                var applicationState = HttpContext.Current.Application;
+                applicationState.Lock();
+                applicationState.Clear();
+                applicationState.UnLock();
+            }
+        }
+    }
 }
