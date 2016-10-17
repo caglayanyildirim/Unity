@@ -23,7 +23,7 @@ namespace Frequency.Unity.Common.Module.EventManagement
         internal Account Account { get; private set; }
         internal int TargetCount { get; private set; }
 
-        public NewEventAccount(Account account, int targetCount)
+        public NewEventAccount(Account account, int targetCount):this()
         {
             if (targetCount == default(int)) { throw new SharedDataException.ValueShouldBeGreaterThan("targetCount",0); }
             if (account == default(Account)) { throw new SharedDataException.RequiredParameterIsMissing("account"); }
